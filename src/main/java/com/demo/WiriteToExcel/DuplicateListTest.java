@@ -147,6 +147,29 @@ public class DuplicateListTest {
                 });
             }
         };
+        
+        HashMap<String, Integer> dupCount = new HashMap<String,Integer>();
+        HashMap<String, Integer> duplicateMobAndCount = new HashMap<String,Integer>();
+        listMap.stream().filter(e->null !=e && e.size()>0).forEach(map1->{
+        	map1.entrySet().stream().forEach(mob->{
+        		if(mob.getKey().equals("Mobile_No")){
+        			if(dupCount.containsKey(mob.getValue())) {
+        				dupCount.put(mob.getValue(),dupCount.get(mob.getValue())+1);
+        				duplicateMobAndCount.put(mob.getValue(),dupCount.get(mob.getValue()));
+        			}else {
+        				dupCount.put(mob.getValue(),1);
+        			}
+        		}
+        		
+        	});
+        });
+        
+        dupCount.forEach((k,v)->{
+        	if(v !=1) {
+        		System.out.println(k+"="+v);
+        	}
+        });
+
         HashMap<String, Map<String, String>> hashMap = new HashMap<String,Map<String, String>>();
         HashMap<String, Map<String, String>> hashMap1 = new HashMap<String,Map<String, String>>();
         
@@ -167,7 +190,7 @@ public class DuplicateListTest {
         	 hashMap1.forEach((k,v)->System.out.println(k+"="+v));
         	 
         	 try {
-				SimpleExcelWriterExample.writetoExcel(hashMap1);
+				SimpleExcelWriterExample.writetoExcel(hashMap1,duplicateMobAndCount);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
